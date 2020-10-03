@@ -2,8 +2,16 @@
 
 {% block section %}
 
-    <section class="center w-90 ubuntu pt5">
-        <div class="fr fl-l fl-m w-100 w-80-l w-80-m pa2">
+    <section class="center w-100 w-90-ns ubuntu pt5">
+        <div class="fr-ns w-100 w-20-l w-20-m overflow-hidden ma0" style="scrollbar-width: none;">
+            <h2 class="pl2 underline dn db-l db-m">Tags</h2>
+            <div class="nowrap flex-wrap-l flex-wrap-m inline-flex-l inline-flex-m overflow-auto pb2">
+                {% for t in tags %}
+                    <a class="f7 link dim br-pill ba ph3 pv2 dib black ma1" href="{% url 'web:home' %}?tag={{ t }}">{{ t }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="fl-ns w-90 w-80-l w-80-m center">
             {% if request.GET.tag %}
                 <h2 class="ml2 w-90 w-80-l underline">{{ request.GET.tag }}</h2>
             {% endif %}
@@ -51,14 +59,7 @@
             {% endif %}
 
         </div>
-        <div class="fl fr-l fr-m w-100 w-20-l w-20-m pa2">
-            <h2 class="pl2 underline">Tags</h2>
-            <div class="flex flex-wrap items-start">
-                {% for t in tags %}
-                    <a class="f6 link dim br-pill ba ph3 pv2 mb2 dib black ma2" href="{% url 'web:home' %}?tag={{ t }}">{{ t }}</a>
-                {% endfor %}
-            </div>
-        </div>
+
     </section>
 
 {% endblock %}
