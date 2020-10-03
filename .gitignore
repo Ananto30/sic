@@ -1,0 +1,16 @@
+.idea
+.vscode
+db.sqlite3
+
+media
+venv
+__pycache__
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+.DS_Store
+staticfiles
+
+*.log
