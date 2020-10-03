@@ -28,7 +28,11 @@ def is_domain_in_list(url):
 
 
 def home(request):
-    content = Content.objects.all().order_by('-created_at')
+    tag = request.GET.get('tag')
+    if tag:
+        content = Content.objects.filter(tag=tag).order_by('-created_at')
+    else:
+        content = Content.objects.all().order_by('-created_at')
     tags = [t[0] for t in Content.TAGS]
     return render(request, 'web/index.html', {"content": content, "tags": tags})
 
@@ -67,7 +71,7 @@ def share(request):
                 title=title,
                 description=desc,
                 image=img_url,
-
+                tag=tag
             )
             cntnt.save()
             return render(request, 'web/share.html', {"success": "URL added successfully", "tags": tags})
