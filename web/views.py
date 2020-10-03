@@ -6,6 +6,11 @@ from webpreview import web_preview
 
 from web.models import Content
 
+supported_domains = [
+    'youtube',
+    'youtu.be'
+]
+
 
 def is_valid_url(url):
     regex = re.compile(
@@ -16,6 +21,10 @@ def is_valid_url(url):
         r'(?::\d+)?'  # optional port
         r'(?:/?|[/?]\S+)$', re.IGNORECASE)
     return re.match(regex, url) is not None
+
+
+def is_domain_in_list(url):
+    return url.lower() in supported_domains
 
 
 def home(request):
@@ -40,6 +49,10 @@ def share(request):
         url = request.POST.get('url')
         if not is_valid_url(url):
             return render(request, 'web/share.html', {"error": "Not a valid URL!"})
+
+        if not is_domain_in_list(url):
+            return render(request, 'web/share.html', {"error": "This is not a supported URL!"})
+
         title, desc, img_url = web_preview(url)
         if title and img_url:
             cntnt = Content(
