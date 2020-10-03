@@ -1,6 +1,7 @@
 import re
 
 from django.shortcuts import render
+from ratelimit.decorators import ratelimit
 from webpreview import web_preview
 
 from web.models import Content
@@ -41,7 +42,7 @@ def about(request):
     return render(request, 'web/about.html')
 
 
-# @ratelimit(key='ip', rate='2/5m')
+@ratelimit(key='ip', rate='2/5m')
 def share(request):
     tags = [t[0] for t in Content.TAGS]
     if request.method == 'GET':
