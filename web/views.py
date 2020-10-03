@@ -1,7 +1,6 @@
 import re
 
 from django.shortcuts import render
-from ratelimit.decorators import ratelimit
 from webpreview import web_preview
 
 from web.models import Content
@@ -24,7 +23,8 @@ def is_valid_url(url):
 
 
 def is_domain_in_list(url):
-    return url.lower() in supported_domains
+    for sd in supported_domains:
+        return sd in url.lower()
 
 
 def home(request):
@@ -37,22 +37,28 @@ def about(request):
     return render(request, 'web/about.html')
 
 
-@ratelimit(key='ip', rate='2/5m')
+# @ratelimit(key='ip', rate='2/5m')
 def share(request):
+    tags = [t[0] for t in Content.TAGS]
     if request.method == 'GET':
-        return render(request, 'web/share.html')
+        return render(request, 'web/share.html', {"tags": tags})
     if request.method == 'POST':
         was_limited = getattr(request, 'limited', False)
         print(was_limited)
         if was_limited:
-            return render(request, 'web/share.html', {"error": "Please don't spam, you can share 2 URL every 5 minute. Thanks!"})
+            return render(request, 'web/share.html', {"error": "Please don't spam, you can share 2 URL every 5 minute. Thanks!", "tags": tags})
 
         url = request.POST.get('url')
+        tag = request.POST.get('tag')
+        print("mama", tag)
+
         if not is_valid_url(url):
-            return render(request, 'web/share.html', {"error": "Not a valid URL!"})
+            return render(request, 'web/share.html', {"error": "Not a valid URL!", "tags": tags})
+        if tag not in tags:
+            return render(request, 'web/share.html', {"error": "Enter valid tag!", "tags": tags})
 
         if not is_domain_in_list(url):
-            return render(request, 'web/share.html', {"error": "This is not a supported URL!"})
+            return render(request, 'web/share.html', {"error": "This is not a supported URL!", "tags": tags})
 
         title, desc, img_url = web_preview(url)
         if title and img_url:
@@ -64,6 +70,6 @@ def share(request):
 
             )
             cntnt.save()
-            return render(request, 'web/share.html', {"success": "URL added successfully"})
+            return render(request, 'web/share.html', {"success": "URL added successfully", "tags": tags})
 
-        return render(request, 'web/share.html', {"error": "URL cannot be parsed, please try another URL."})
+        return render(request, 'web/share.html', {"error": "URL cannot be parsed, please try another URL.", "tags": tags})
