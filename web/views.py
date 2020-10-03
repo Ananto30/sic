@@ -24,8 +24,7 @@ def is_valid_url(url):
 
 
 def is_domain_in_list(url):
-    for sd in supported_domains:
-        return sd in url.lower()
+    return any(domain in url for domain in supported_domains)
 
 
 def home(request):
