@@ -1,7 +1,6 @@
 import re
 
 from django.shortcuts import render
-from ratelimit.core import is_ratelimited
 from ratelimit.decorators import ratelimit
 from webpreview import web_preview
 
@@ -24,7 +23,11 @@ def home(request):
     return render(request, 'web/index.html', {"content": cntnt})
 
 
-@ratelimit(key='ip', rate='1/m')
+def about(request):
+    return render(request, 'web/about.html')
+
+
+@ratelimit(key='ip', rate='2/5m')
 def share(request):
     if request.method == 'GET':
         return render(request, 'web/share.html')
@@ -32,7 +35,7 @@ def share(request):
         was_limited = getattr(request, 'limited', False)
         print(was_limited)
         if was_limited:
-            return render(request, 'web/share.html', {"error": "Please don't spam, you can share one URL every minute. Thanks!"})
+            return render(request, 'web/share.html', {"error": "Please don't spam, you can share 2 URL every 5 minute. Thanks!"})
 
         url = request.POST.get('url')
         if not is_valid_url(url):

@@ -10,5 +10,6 @@ app_name = 'web'
 urlpatterns = [
     path('', views.home, name='home'),
     path('share/', views.share, name='share'),
+    path('about/', views.about, name='about'),
 
 ]
