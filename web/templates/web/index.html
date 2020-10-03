@@ -2,40 +2,56 @@
 
 {% block section %}
 
-    <section class="center w-90 w-80-l ubuntu pt5">
-        {% regroup content by created_at|date:"d M, Y" as content_groups %}
+    <section class="center w-90 ubuntu pt5">
+        <div class="fr fl-l fl-m w-100 w-80-l w-80-m pa2">
 
-        {% for contents_by_day in content_groups %}
-            <h2 class="ml2 w-90 w-80-l underline">{{ contents_by_day.grouper }}</h2>
-            <div class="flex flex-wrap items-start">
+            {% regroup content by created_at|date:"d M, Y" as content_groups %}
 
-                {% for c in contents_by_day.list %}
+            {% for contents_by_day in content_groups %}
+                <h2 class="ml2 w-90 w-80-l underline">{{ contents_by_day.grouper }}</h2>
+                <div class="flex flex-wrap items-start">
 
-                    <div class="fl w-50 w-25-m w-20-l pa2">
-                        <a class="db mw5 black link dim"
-                           title="{{ c.title }}"
-                           href="{{ c.link }}">
+                    {% for c in contents_by_day.list %}
 
-                            <div class="aspect-ratio aspect-ratio--16x9">
-                                <div style="background-image:url({{ c.image }});"
-                                     class="bg-center cover aspect-ratio--object ">
+                        <div class="fl w-50 w-25-m w-20-l pa2">
+                            <a class="db mw5 black link dim"
+                               title="{{ c.title }}"
+                               href="{{ c.link }}">
+
+                                <div class="aspect-ratio aspect-ratio--16x9">
+                                    <div style="background-image:url({{ c.image }});"
+                                         class="bg-center cover aspect-ratio--object ">
+                                    </div>
                                 </div>
-                            </div>
 
-                            <dl class="mt2 f6 lh-copy v-top">
-                                <dt class="clip">Title</dt>
-                                <dd class="ml0 fw6-l fw6-m fw4 f7 f6-l f6-m">{{ c.title | truncatechars:60 }}</dd>
-                                <dt class="clip">Description</dt>
-                                <dd class="dn db-l db-m ml0 gray">{{ c.description | truncatechars:100 }}</dd>
-                                {#                              <dd class="ml0 gray">{{ c.description | truncatechars:100 }}</dd>#}
-                            </dl>
-                        </a>
-                    </div>
+                                <dl class="mt2 f6 lh-copy">
+                                    <dt class="clip">Title</dt>
+                                    <dd class="ml0 fw6-l fw6-m fw4 f7 f6-l f6-m">{{ c.title | truncatechars:60 }}</dd>
+                                    <dt class="clip">Description</dt>
+                                    {% if c.description %}
+                                        <dd class="dn db-l db-m ml0 gray">{{ c.description | truncatechars:100 }}</dd>
+                                    {% endif %}
+                                    {#                              <dd class="ml0 gray">{{ c.description | truncatechars:100 }}</dd>#}
+                                    {#                                    {% if c.tag %}#}
+                                    {#                                        <small class="bb pa0 fw1">{{ c.tag }}</small>#}
+                                    {#                                    {% endif %}#}
+                                </dl>
+                            </a>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            {% endfor %}
+
+        </div>
+        <div class="fl fr-l fr-m w-100 w-20-l w-20-m pa2">
+            <h2 class="pl2 underline">Tags</h2>
+            <div class="flex flex-wrap items-start">
+                {% for t in tags %}
+                    <a class="f6 link dim br-pill ba ph3 pv2 mb2 dib black ma2" href="#0">{{ t }}</a>
                 {% endfor %}
-
             </div>
-        {% endfor %}
-
+        </div>
     </section>
 
 {% endblock %}

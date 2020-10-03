@@ -28,8 +28,9 @@ def is_domain_in_list(url):
 
 
 def home(request):
-    cntnt = Content.objects.all().order_by('-created_at')
-    return render(request, 'web/index.html', {"content": cntnt})
+    content = Content.objects.all().order_by('-created_at')
+    tags = [t[0] for t in Content.TAGS]
+    return render(request, 'web/index.html', {"content": content, "tags": tags})
 
 
 def about(request):
