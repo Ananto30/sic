@@ -42,7 +42,7 @@
                                         <dd class="ml0 fw6-l fw6-m fw4 f7 f6-l f6-m">{{ c.title | truncatechars:60 }}</dd>
                                         <dt class="clip">Description</dt>
                                         {% if c.description %}
-                                            <dd class="dn db-l db-m ml0 gray">{{ c.description | truncatechars:100 }}</dd>
+                                            <dd class="dn db-l db-m ml0 gray word-break-all">{{ c.description | truncatechars:100 }}</dd>
                                         {% endif %}
                                         {#                              <dd class="ml0 gray">{{ c.description | truncatechars:100 }}</dd>#}
                                         {#                                    {% if c.tag %}#}
