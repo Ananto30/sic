@@ -34,35 +34,35 @@ def home(request):
     else:
         content = Content.objects.all().order_by('-created_at')
     tags = [t[0] for t in Content.TAGS]
-    return render(request, 'web/index.html', {"content": content, "tags": tags})
+    return render(request, 'web/index.jinja2', {"content": content, "tags": tags})
 
 
 def about(request):
-    return render(request, 'web/about.html')
+    return render(request, 'web/about.jinja2')
 
 
 @ratelimit(key='ip', rate='2/5m')
 def share(request):
     tags = [t[0] for t in Content.TAGS]
     if request.method == 'GET':
-        return render(request, 'web/share.html', {"tags": tags})
+        return render(request, 'web/share.jinja2', {"tags": tags})
     if request.method == 'POST':
         was_limited = getattr(request, 'limited', False)
         print(was_limited)
         if was_limited:
-            return render(request, 'web/share.html', {"error": "Please don't spam, you can share 2 URL every 5 minute. Thanks!", "tags": tags})
+            return render(request, 'web/share.jinja2', {"error": "Please don't spam, you can share 2 URL every 5 minute. Thanks!", "tags": tags})
 
         url = request.POST.get('url')
         tag = request.POST.get('tag')
         print("mama", tag)
 
         if not is_valid_url(url):
-            return render(request, 'web/share.html', {"error": "Not a valid URL!", "tags": tags})
+            return render(request, 'web/share.jinja2', {"error": "Not a valid URL!", "tags": tags})
         if tag not in tags:
-            return render(request, 'web/share.html', {"error": "Enter valid tag!", "tags": tags})
+            return render(request, 'web/share.jinja2', {"error": "Enter valid tag!", "tags": tags})
 
         if not is_domain_in_list(url):
-            return render(request, 'web/share.html', {"error": "This is not a supported URL!", "tags": tags})
+            return render(request, 'web/share.jinja2', {"error": "This is not a supported URL!", "tags": tags})
 
         title, desc, img_url = web_preview(url)
         if title and img_url:
@@ -74,6 +74,6 @@ def share(request):
                 tag=tag
             )
             cntnt.save()
-            return render(request, 'web/share.html', {"success": "URL added successfully", "tags": tags})
+            return render(request, 'web/share.jinja2', {"success": "URL added successfully", "tags": tags})
 
-        return render(request, 'web/share.html', {"error": "URL cannot be parsed, please try another URL.", "tags": tags})
+        return render(request, 'web/share.jinja2', {"error": "URL cannot be parsed, please try another URL.", "tags": tags})

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+      <title>SIC | Sharing is caring</title>
+      <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
+      <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&display=swap" rel="stylesheet">
+      <style>
+          .ubuntu {font-family: 'Ubuntu', sans-serif;}
+          ::-webkit-scrollbar {width: 0;background: transparent; /* make scrollbar transparent */}
+          .word-break-all {word-break: break-all;}
+      </style>
+  </head>
+
+  <body>
+  <header class="bg-white black-80 tc ubuntu">
+      <!-- <h1 class="mt2 mb0 baskerville i fw1 f1">Sharing is caring</h1>
+      <h2 class="mt2 mb0 f6 fw4 ttu tracked">Share songs, videos being anonymous</h2> -->
+      <nav class="bb tc fixed w-100 mr-auto ml0 bg-white-90 z-max">
+          <a class="f6 f5-l link bg-animate black-80 hover-bg-light-gray dib pa3 ph4-l" href="{% url 'web:home' %}">Home</a>
+          <a class="f6 f5-l link bg-animate black-80 hover-bg-light-gray dib pa3 ph4-l" href="{% url 'web:share' %}">Share</a>
+          <a class="f6 f5-l link bg-animate black-80 hover-bg-light-gray dib pa3 ph4-l" href="{% url 'web:about' %}">About</a>
+      </nav>
+  </header>
+
+  {% block section %}
+  {% endblock %}
+
+  </body>
+</html>
